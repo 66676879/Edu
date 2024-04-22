@@ -4,13 +4,19 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes');
 const compression = require('compression')
+const cors = require('cors')
 
 const app = express();
+
+
+app.use(cors());
+
+app.options('*' , cors());
 
 // Middleware
 app.use(express.json());
 
-app.use(compression())
+app.use(compression());
 
 // Routes
 app.use('/api/auth', authRoutes);
