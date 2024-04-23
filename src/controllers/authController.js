@@ -17,7 +17,6 @@ const register = async (req, res) => {
     });
 
     // Save the user to the database
-    //console.log(`${user}`)
     await user.save();
 
     res.status(201).json({ message: 'User created successfully' });
@@ -66,4 +65,23 @@ const forgetPassword = async (req, res) => {
   }
 };
 
-module.exports = { register, login, forgetPassword };
+const checkResetToken = (req, res) => {
+  try {
+    const { token } = req.body;
+
+    // Check if the token matches the predefined value
+    const isTokenValid = token === '888888';
+
+    if (isTokenValid) {
+      return res.json({ success: true, message: 'Valid token. You can now change the password.' });
+    } else {
+      return res.status(404).json({ success: false, message: 'Invalid token. Please try again.' });
+    }
+ 
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+};
+
+module.exports = { register, login, forgetPassword, checkResetToken };
