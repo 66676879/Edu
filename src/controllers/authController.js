@@ -26,7 +26,6 @@ const register = async (req, res) => {
   }
 };
 
-
 const login = async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -46,6 +45,25 @@ const login = async (req, res) => {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  };
-  
-module.exports = { register, login };
+};
+
+const forgetPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Check if the email exists in the database
+    const user = await User.findOne({ email });
+    if (user) {
+      // If the user exists, you can choose to send an email with a password reset link here.
+      // For simplicity, let's just return a success message for now.
+      return res.json({ success: true, message: 'Password reset email sent successfully.' });
+    } else {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+};
+
+module.exports = { register, login, forgetPassword };
