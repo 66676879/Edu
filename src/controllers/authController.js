@@ -84,4 +84,42 @@ const checkResetToken = (req, res) => {
   }
 };
 
-module.exports = { register, login, forgetPassword, checkResetToken };
+
+// enter new passord and  enter email and   allow the user to change the password for this email 
+
+const enterNewPassword = async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    // Validate email and new password
+    if (!email || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Email and new password are required.' });
+    }
+
+    // Find the user by email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update user's password
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.json({ success: true, message: 'Password updated successfully.' });
+ 
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+};
+
+
+module.exports = { register, login, forgetPassword, checkResetToken, enterNewPassword };
+
+ 
+ 
