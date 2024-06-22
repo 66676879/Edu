@@ -13,7 +13,7 @@ router.post('/forgetpassword', forgetPassword);
 
 // Reset token route
 router.post('/reset', checkResetToken);
-
+  
 // New password route
 router.post('/newpassword', enterNewPassword);
 

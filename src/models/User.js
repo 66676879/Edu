@@ -13,6 +13,14 @@ const userSchema = new mongoose.Schema({
     lowercase: true ,
     validate: [ validator.isEmail , "please provide a valid email "]
   },
+  birthDate: {
+    type: String,
+    required: true,
+  },
+  gender: {
+    type: String,
+    required: true,
+  },
   password: { 
     type: String, 
     required: [true , "please provide a password"] ,
